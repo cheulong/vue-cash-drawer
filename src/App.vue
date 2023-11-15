@@ -6,20 +6,25 @@ const cid = ref([
   ["ONE", 1],
   ["TWO", 4],
   ["FIVE", 5],
-  // ["TEN", 60],
-  // ["TWENTY", 100],
-  // ["FIFTY", 50],
-  // ["HUNDRED", 200],
+  ["TEN", 60],
+  ["TWENTY", 100],
+  ["FIFTY", 50],
+  ["HUNDRED", 200],
 ])
 
 const price = ref(25)
 const cash = ref(30)
+function updateCid(data) {
+  console.log({ data });
+  cid.value = data
+}
 
 </script>
 
 <template>
   <h1>Cash Drawer</h1>
-  <CashRegister :price="price" :cash="cash" :cid="cid" />
+  <CashRegister :price="price" :cash="cash" :cid="cid" @CIDRemain="updateCid" />
+  <CashRegister :price="price" :cash="cash" :cid="cid" @CIDRemain="updateCid" />
 </template>
 
 <style scoped>

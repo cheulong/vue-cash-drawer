@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
+const emit = defineEmits(['CIDRemain'])
 const {
   price,
   cash,
@@ -57,6 +58,7 @@ function calculateChange(cid, cash, price) {
         changeArray1.push([name, returnedAmount]);
         remainChange = remainChange - returnedAmount;
         remainCID = handleRemainCID(remainCID, i, returnedAmount);
+        emit('CIDRemain', remainCID)
       }
     }
   }
@@ -69,6 +71,7 @@ function calculateChange(cid, cash, price) {
     status.value = "OPEN";
     changeArray.value = [...changeArray1];
   }
+  console.log(remainCID);
 }
 
 calculateChange(cid, cash, price)
