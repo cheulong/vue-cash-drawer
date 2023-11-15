@@ -12,10 +12,8 @@ const cid = ref([
   ["HUNDRED", 200],
 ])
 
-const price = ref(25)
-const cash = ref(30)
+
 function updateCid(data) {
-  console.log({ data });
   cid.value = data
 }
 
@@ -23,8 +21,10 @@ function updateCid(data) {
 
 <template>
   <h1>Cash Drawer</h1>
-  <CashRegister :price="price" :cash="cash" :cid="cid" @CIDRemain="updateCid" />
-  <CashRegister :price="price" :cash="cash" :cid="cid" @CIDRemain="updateCid" />
+  <CashRegister :price="25" :cash="30" :cid="cid" @CIDRemain="updateCid" />
+  <CashRegister :price="25" :cash="100" :cid="cid" @CIDRemain="updateCid" />
+  <CashRegister :price="95" :cash="100" :cid="cid" @CIDRemain="updateCid" />
+  <CashRegister :price="660" :cash="1000" :cid="cid" @CIDRemain="updateCid" />
 </template>
 
 <style scoped>
