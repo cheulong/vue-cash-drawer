@@ -11,35 +11,44 @@ const cid = ref([
   ["FIFTY", 50],
   ["HUNDRED", 200],
 ])
+const history = ref([])
 
 
 function updateCid(data) {
   cid.value = data
 }
-
+function updateHistory(data) {
+  history.value = [...history.value, data]
+}
 </script>
 
 <template>
   <h1>Cash Drawer</h1>
-  <CashRegister :price="25" :cash="30" :cid="cid" @CIDRemain="updateCid" />
-  <CashRegister :price="25" :cash="100" :cid="cid" @CIDRemain="updateCid" />
-  <CashRegister :price="95" :cash="100" :cid="cid" @CIDRemain="updateCid" />
-  <CashRegister :price="660" :cash="1000" :cid="cid" @CIDRemain="updateCid" />
+  <CashRegister :cid="cid" @CIDRemain="updateCid" @updateHistory="updateHistory" />
+  <ul>
+    <li v-for="item in history">
+      <p>Status: {{ item.status }}</p>
+      <p>Change: {{ item.change }}</p>
+    </li>
+  </ul>
 </template>
 
 <style scoped>
 .logo {
   height: 6em;
   padding: 1.5em;
-  will-change: filter;
   transition: filter 300ms;
 }
 
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop - shadow(0 0 2em #646cffaa);
 }
 
 .logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+  filter: drop - shadow(0 0 2em #42b883aa);
+}
+
+ul {
+  text-align: left;
 }
 </style>

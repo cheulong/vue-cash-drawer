@@ -1,19 +1,19 @@
 <script setup>
 import { ref } from 'vue'
 
-const emit = defineEmits(['CIDRemain'])
+const emit = defineEmits(['CIDRemain', 'updateHistory'])
 const {
-  price,
-  cash,
+
   cid } = defineProps({
-    price: Number,
-    cash: Number,
+
     cid: Array
   })
 
 const status = ref('')
 const remainChange = ref([])
 const changeArray = ref([])
+const inputCash = ref(0)
+const inputPrice = ref(0)
 function handleRemainCID(remainCID, index, returnedAmount) {
   return remainCID.map((c, i) => (i === index ? [c[0], c[1] - returnedAmount] : c));
 }
@@ -24,7 +24,7 @@ function isDrawerClosed(totalCID, change) {
   return totalCID == change;
 }
 
-function calculateChange(cid, cash, price) {
+function calculateChange(cid, price, cash) {
   const currencyUnits = [
     { name: "ONE", value: 1 },
     { name: "TWO", value: 2 },
@@ -64,6 +64,8 @@ function calculateChange(cid, cash, price) {
   }
   if (isInsufficientFunds(totalCID, Change)) {
     status.value = "INSUFFICIENT_FUNDS";
+    changeArray.value = [];
+
   } else if (isDrawerClosed(totalCID, Change)) {
     status.value = "CLOSED";
     changeArray.value = [...changeArray1];
@@ -71,10 +73,17 @@ function calculateChange(cid, cash, price) {
     status.value = "OPEN";
     changeArray.value = [...changeArray1];
   }
-  console.log(remainCID);
+  if (changeArray.value.length == 0) {
+    status.value = "INSUFFICIENT_FUNDS";
+    changeArray.value = [];
+  }
+  emit('updateHistory', {
+    status: status.value,
+    change: changeArray.value
+  })
+
 }
 
-calculateChange(cid, cash, price)
 
 </script>
 
@@ -82,18 +91,11 @@ calculateChange(cid, cash, price)
   <h1>{{ msg }}</h1>
 
   <div>
-    <div v-if="status === 'INSUFFICIENT_FUNDS'">
-      <p>Status: INSUFFICIENT_FUNDS</p>
-      <p>Change: []</p>
-    </div>
-    <div v-else-if="status === 'CLOSED'">
-      <p>Status: CLOSED</p>
-      <p>Change: {{ JSON.stringify(changeArray) }}</p>
-    </div>
-    <div v-else>
-      <p>Status: OPEN</p>
-      <p>Change: {{ JSON.stringify(changeArray) }}</p>
-    </div>
+    <label>Price:
+      <input v-on:change="(event) => inputPrice = event.target.value" :value="inputPrice" type="text" /></label>
+    <label>Cash: <input v-on:change="(event) => inputCash = event.target.value" :value="inputCash" type="text" /></label>
+    <button @click="calculateChange(cid, inputPrice, inputCash)">Pay</button>
+
   </div>
 </template>
 
