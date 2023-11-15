@@ -24,6 +24,7 @@ function updateHistory(data) {
 
 <template>
   <h1>Cash Drawer</h1>
+  <p> {{ cid }}</p>
   <CashRegister :cid="cid" @CIDRemain="updateCid" @updateHistory="updateHistory" />
   <ul>
     <li v-for="item in history">
